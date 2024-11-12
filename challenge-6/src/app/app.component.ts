@@ -1,14 +1,15 @@
 import { Component, inject, Signal } from '@angular/core';
-import { Footer } from "./footer.component";
 import { Article, ArticlesService } from './articles.service';
 import { toSignal } from '@angular/core/rxjs-interop'
+import { FooterComponent } from './footer.component';
+import { CardComponent } from './card.component';
 
 @Component({
   selector: 'app-root',
   standalone: true,
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
-  imports: [Footer],
+  imports: [FooterComponent, CardComponent,]
 })
 export class AppComponent {
   title = 'mentoring-program-starter-kit';

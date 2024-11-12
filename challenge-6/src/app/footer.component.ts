@@ -19,4 +19,4 @@ import { Component } from '@angular/core';
     </div>
   `,
 })
-export class Footer {}
+export class FooterComponent {}
