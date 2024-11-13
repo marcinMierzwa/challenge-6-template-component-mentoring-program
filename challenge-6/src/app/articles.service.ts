@@ -25,6 +25,7 @@ export interface Article {
   imageUrl: string;
   content: string;
   id: number;
+  showImage: boolean;
 }
 
 @Injectable({
@@ -43,6 +44,7 @@ export class ArticlesService {
             imageUrl: article.imageUrl,
             content: article.content,
             id: article.id,
+            showImage: article.showImage
           }))
         ),
       );

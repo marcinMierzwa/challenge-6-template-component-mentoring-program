@@ -2,18 +2,23 @@
   class="container-fluid bg-body-tertiary p-0 min-vh-100 vw-100 d-flex flex-column justify-content-between align-items-center"
 >
   <header class="w-100 my-4">
-    <div class="d-flex flex-column align-items-center gap-3">
+    <div class="d-flex flex-column align-items-center gap-4">
       <h1 class="m-0">Template Component - Article List</h1>
       <button class="btn btn-outline-dark">Add New Article</button>
     </div>
   </header>
 
   <main class="w-75">
-    <div class="row row-cols-1 row-cols-md-3 g-4">
+    <div class="row row-cols-1 row-cols-md-3 g-4 align-items-stretch">
       @for (article of articles(); track article.id) {
       <app-card
       [title]="article.title"
       [imageUrl]="article.imageUrl"
+      [content]="article.content"
+      [id]="article.id"
+      [showImage]="article.showImage"
+      [btnLabel]="getButtonLabel(article.showImage)"
+      (clickEvent)="handleShowImageButtonClick($event)"
       ></app-card>
       }
     </div>
