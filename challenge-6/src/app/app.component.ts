@@ -3,12 +3,12 @@ import {
   inject,
   signal,
   Signal,
-  WritableSignal,
 } from '@angular/core';
 import { Article, ArticlesService } from './articles.service';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { FooterComponent } from './footer.component';
 import { CardComponent } from './card.component';
+import { FormComponent } from './form.component';
 
 export enum ArticleState {
   INIT = "initial state",
@@ -21,7 +21,7 @@ export enum ArticleState {
   standalone: true,
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
-  imports: [FooterComponent, CardComponent],
+  imports: [FooterComponent, CardComponent, FormComponent],
 })
 export class AppComponent {
   title = 'mentoring-program-starter-kit';
@@ -41,6 +41,10 @@ export class AppComponent {
 
   getButtonLabel(showImage: boolean): string {
     return showImage ? 'Hide Image' : 'Show Image';
+  }
+
+  addNewArticle() {
+
   }
   
 }
