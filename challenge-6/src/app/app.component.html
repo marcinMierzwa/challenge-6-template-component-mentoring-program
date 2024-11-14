@@ -1,31 +1,26 @@
 <div
   class="container-fluid bg-body-tertiary d-flex flex-column justify-content-between align-items-center"
 >
-  <header class="w-100 my-4">
+  <header class="w-100 my-3">
     <div class="d-flex flex-column align-items-center gap-4">
       <h1 class="m-0">Template Component - Article List</h1>
       <button
         class="btn btn-outline-dark"
         data-bs-toggle="modal"
         data-bs-target="#exampleModal"
+        (click)="addNewArticle()"
       >
         Add New Article
       </button>
-
-      <!-- <button 
-      class="btn btn-outline-dark"
-      (click)="addNewArticle()"
-      >Add New Article</button> -->
     </div>
   </header>
 
   <main class="w-75">
-
     @if(articles().length > 0) {
     <!-- section init state -->
     <section>
       <div
-        class="d-flex flex-wrap justify-content-between align-items-stretch gap-4"
+        class="d-flex flex-wrap justify-content-between align-items-stretch gap-3"
       >
         @for (article of articles(); track article.id) {
         <div style="flex-basis: 30%">
@@ -53,28 +48,36 @@
         aria-hidden="true"
         data-bs-backdrop="static"
         data-bs-keyboard="false"
+        style="backdrop-filter: blur(2px)"
       >
         <div
-          class="bg-success-subtle w-75 mt-5 mx-auto d-flex justify-content-between align-items-center gap-4 p-3"
+          class="bg-transparent w-75 mt-3 mx-auto d-flex justify-content-between gap-5 p-3"
         >
+            <!-- form -->
 
-        <div class="d-flex flex-column gap-3 bg-success w-50">
-          <h2 class="fs-5">Mode</h2>
-            <app-form></app-form>
+          <div class="d-flex flex-column bg-success w-50 rounded">
+            <app-form
+            [articleMode]="this.articleMode()"
+            
+            ></app-form>
           </div>
 
+          <div class="d-flex flex-column text-center gap-3 w-50 rounded">
+            <h2 class="fs-4 fw-medium bg-body-tertiary p-3 rounded">Preview</h2>
+              <!-- card -->
 
-          <div class="d-flex flex-column gap-3 bg-success w-50">
-              <h2 class="fs-5">Preview</h2>
-              <app-card
+            <app-card
               [title]="articles()[0].title"
-
-              ></app-card>
+              [imageUrl]="articles()[0].imageUrl"
+              [content]="articles()[0].content"
+              [btnLabel]="getButtonLabel(articles()[0].showImage)"
+            ></app-card>
           </div>
         </div>
 
-
       </div>
+
+
     </section>
 
     } @else {

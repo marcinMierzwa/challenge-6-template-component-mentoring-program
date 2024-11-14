@@ -10,10 +10,16 @@ import { FooterComponent } from './footer.component';
 import { CardComponent } from './card.component';
 import { FormComponent } from './form.component';
 
-export enum ArticleState {
-  INIT = "initial state",
-  CREATE = "create state",
-  EDIT = "edit state"
+export enum ArticleMode {
+  INIT = "Initial Mode",
+  CREATE = "Create Mode",
+  EDIT = "Edit Mode"
+}
+
+export interface CreateArticle {
+  title: string;
+  imageUrl: string;
+  content: string
 }
 
 @Component({
@@ -29,7 +35,7 @@ export class AppComponent {
   articles: Signal<Article[]> = toSignal(this.articlesService.getAll(), {
     initialValue: [],
   });
-  articleState = signal<ArticleState>(ArticleState.INIT);
+  articleMode = signal<ArticleMode>(ArticleMode.INIT);
 
   handleShowImageButtonClick(id: number): void {
     this.articles().find((article: Article) => {
@@ -43,8 +49,8 @@ export class AppComponent {
     return showImage ? 'Hide Image' : 'Show Image';
   }
 
-  addNewArticle() {
-
+  addNewArticle(): void {
+    this.articleMode.set(ArticleMode.CREATE);
   }
   
 }
