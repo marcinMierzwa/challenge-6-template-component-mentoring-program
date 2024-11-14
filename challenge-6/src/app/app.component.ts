@@ -37,7 +37,7 @@ export class AppComponent {
   });
   articleMode = signal<ArticleMode>(ArticleMode.INIT);
 
-  handleShowImageButtonClick(id: number): void {
+  showImage(id: number): void {
     this.articles().find((article: Article) => {
       if (article.id === id) {
         article.showImage = !article.showImage;
@@ -45,12 +45,14 @@ export class AppComponent {
     });
   }
 
-  getButtonLabel(showImage: boolean): string {
+  toggleButtonLabel(showImage: boolean): string {
     return showImage ? 'Hide Image' : 'Show Image';
   }
 
   addNewArticle(): void {
     this.articleMode.set(ArticleMode.CREATE);
   }
+  
+
   
 }

@@ -17,7 +17,7 @@ export interface ArticleApi {
     }
   ]
   id: number;
-  showImage: boolean;
+ showImage: boolean;
 }
 
 export interface Article {

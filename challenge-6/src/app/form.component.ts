@@ -24,13 +24,8 @@ import { ArticleMode } from "./app.component";
   <textarea class="form-control" id="exampleFormControlTextarea1" rows="10"></textarea>
   <small id="emailHelp" class="form-text text-danger p-1">We'll never share your email with anyone else.</small>
 </div>
-<div class="d-flex justify-content-center gap-5 ">
-          <button 
-        type="submit"
-        class="btn btn-outline-dark"
-          >Create</button>
-          <button type="button" data-bs-dismiss="modal" class="btn btn-danger">Cancel</button>
-          </div>
+    <ng-content></ng-content>
+
 </form>
 
   `,

@@ -25,36 +25,17 @@ import { Component, EventEmitter, Input, Output } from "@angular/core";
         <p class="card-text overflow-y-auto px-4 py-2 text-start" style="word-spacing: 0.5em; height: 300px">{{ content }}</p>
         </div>
 
-
-        <div class="d-flex justify-content-center gap-3 my-3 ">
-          <button 
-          class="btn btn-outline-dark btn-sm"
-          (click)="onShowImageButtonClick(id)"
-          >{{ btnLabel }}
-          </button>
-          <button class="btn btn-outline-dark btn-sm">Edit</button>
-        </div>
+        <ng-content></ng-content>
 
     </div>
 </div>
   `,
 })
 export class CardComponent {
-    @Input() title!: string;
-    @Input() imageUrl = '';
-    @Input() content = '';
-    @Input() id!: number;
-    @Input() btnLabel = '';
-    @Input() showImage!: boolean;
+    @Input() title = "";
+    @Input() imageUrl = "";
+    @Input() content = "";
+    @Input() showImage = false;
 
-    @Output() clickEvent = new EventEmitter();
-
-    onShowImageButtonClick(id: number): void{
-        this.clickEvent.emit(id);
-    }
 }
-
-
-// [class.invisible]="!showImage"
-
 
