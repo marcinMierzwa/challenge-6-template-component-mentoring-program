@@ -1,18 +1,25 @@
 import { Component, Input } from "@angular/core";
-import { ArticleMode } from "./app.component";
+import { FormsModule } from "@angular/forms";
+
+export interface CreateArticle {
+    imageUrl: string;
+    title: string;
+    content: string;
+}
 
 @Component({
   selector: 'app-form',
   standalone: true,
+  imports: [FormsModule],
   template: `
-  <form class="bg-body-tertiary p-3 rounded">
+  <form class="bg-body-tertiary p-3 rounded" Form="ngForm" (ngSubmit)="create()">
 
   <h2 class="fs-4 fw-medium text-center p-2">{{ articleMode }}</h2>
 
   <div class="mb-3">
-    <label for="exampleInputEmail1" class="form-label p-1">Email address</label>
-    <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
-    <small id="emailHelp" class="form-text text-danger p-1">We'll never share your email with anyone else.</small>
+    <label for="imageUrl" class="form-label p-1">Image Url</label>
+    <input type="text" class="form-control" id="imageUrl" aria-describedby="imageUrl">
+    <small id="imageUrl" class="form-text text-danger p-1">Image Url field is required.</small>
   </div>
   <div class="mb-3">
     <label for="exampleInputPassword1" class="form-label p-1">Password</label>
@@ -32,5 +39,15 @@ import { ArticleMode } from "./app.component";
 })
 
 export class FormComponent {
-    @Input() articleMode = ArticleMode.INIT;
+    @Input() articleMode = '';
+
+    createArticle: CreateArticle = {
+        imageUrl: '',
+        title: '',
+        content: ''
+    }
+
+    create(): void {
+
+    }
 }

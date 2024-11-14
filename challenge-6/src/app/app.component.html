@@ -6,9 +6,7 @@
       <h1 class="m-0">Template Component - Article List</h1>
       <button
         class="btn btn-outline-dark"
-        data-bs-toggle="modal"
-        data-bs-target="#exampleModal"
-        (click)="addNewArticle()"
+        (click)="createArticle()"
       >
         Add New Article
       </button>
@@ -51,24 +49,17 @@
 
     <!-- section create/edit state -->
     <section>
-      <div
-        class="modal"
-        id="exampleModal"
-        tabindex="-1"
-        aria-labelledby="exampleModalLabel"
-        aria-hidden="true"
-        style="backdrop-filter: blur(2px)"
-      >
 
-
+      <div style="background: rgba(0, 0, 0, 0.5); backdrop-filter: blur(5px); "
+      class="position-fixed top-0 start-0 vw-100 vh-100">
       
         <div
-          class="bg-transparent w-75 mt-3 mx-auto d-flex justify-content-between gap-5 p-3"
+          class="w-75 mt-3 mx-auto d-flex justify-content-between gap-5 p-3"
         >
           <!-- form -->
 
           <div class="d-flex flex-column bg-success w-50 rounded">
-            <app-form [articleMode]="this.articleMode()">
+            <app-form [articleMode]="this.titleMode()">
 
               <div class="d-flex justify-content-center gap-5 ">
                 <button 
@@ -105,7 +96,7 @@
           </app-card>
           </div>
         </div>
-      </div>
+        </div>
     </section>
 
     } @else {
@@ -120,3 +111,16 @@
   </footer>
 </div>
 
+
+<!-- data-bs-toggle="modal"
+data-bs-target="#exampleModal"
+<div
+class="modal"
+id="exampleModal"
+tabindex="-1"
+aria-labelledby="exampleModalLabel"
+aria-hidden="true"
+style="backdrop-filter: blur(2px)"
+>  
+    </div>
+ -->
