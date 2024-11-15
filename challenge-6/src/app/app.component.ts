@@ -11,7 +11,7 @@ import { CardComponent } from './card.component';
 import { FormComponent } from './form.component';
 
 
-export interface CreateArticle {
+export interface CreateEditArticle {
   title: string;
   imageUrl: string;
   content: string
@@ -30,6 +30,11 @@ export class AppComponent {
   articles: Signal<Article[]> = toSignal(this.articlesService.getAll(), {
     initialValue: [],
   });
+  article: CreateEditArticle = {
+    title: '',
+    imageUrl: '',
+    content: ''
+  }
   titleMode = signal<string>('');
   isVisibleMode = signal<boolean>(true);
 
@@ -49,6 +54,11 @@ export class AppComponent {
     this.titleMode.set('Create Mode');
     this.isVisibleMode.update( isVisibleMode => !isVisibleMode);
     this.toggleScrollVisibility(true);
+  }
+
+  handleCreateArticle(newArticle: CreateEditArticle ): void {
+    console.log(newArticle);
+    
   }
 
   editArticle(): void {

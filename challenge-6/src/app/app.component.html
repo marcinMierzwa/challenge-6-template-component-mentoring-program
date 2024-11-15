@@ -52,7 +52,10 @@
           <!-- form -->
 
           <div class="d-flex flex-column bg-success w-50 rounded">
-            <app-form [articleMode]="this.titleMode()">
+            <app-form
+             [articleMode]="this.titleMode()"
+             (newArticle)="handleCreateArticle($event)"
+             >
               <button 
               type="button" 
               class="btn btn-danger"
@@ -64,7 +67,7 @@
           <div class="d-flex flex-column text-center gap-3 w-50 rounded">
             <h2 class="fs-4 fw-medium bg-body-tertiary p-3 rounded">Preview</h2>
 
-            <!-- card -->
+            <!-- card preview -->
 
             <app-card>
               <div class="d-flex justify-content-center gap-3 my-3">

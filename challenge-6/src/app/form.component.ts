@@ -1,11 +1,7 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { CreateEditArticle } from './app.component';
 
-export interface CreateArticle {
-  imageUrl: string;
-  title: string;
-  content: string;
-}
 
 @Component({
   selector: 'app-form',
@@ -118,11 +114,15 @@ export interface CreateArticle {
 export class FormComponent {
   @Input() articleMode = '';
 
-  createArticle: CreateArticle = {
+  createArticle: CreateEditArticle = {
     imageUrl: '',
     title: '',
     content: '',
   };
 
-  create(): void {}
+  @Output() newArticle = new EventEmitter<CreateEditArticle>();
+
+  create(): void {
+    this.newArticle.emit(this.createArticle)
+  }
 }
