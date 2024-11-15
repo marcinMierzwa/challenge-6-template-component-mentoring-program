@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, NgForm } from '@angular/forms';
 import { CreateEditArticle } from './app.component';
 
 
@@ -11,7 +11,7 @@ import { CreateEditArticle } from './app.component';
     <form
       class="bg-body-tertiary p-3 rounded"
       #form="ngForm"
-      (ngSubmit)="create()"
+      (ngSubmit)="submitForm(form)"
     >
       <h2 class="fs-4 fw-medium text-center p-2">{{ articleMode }}</h2>
 
@@ -122,7 +122,8 @@ export class FormComponent {
 
   @Output() newArticle = new EventEmitter<CreateEditArticle>();
 
-  create(): void {
-    this.newArticle.emit(this.createArticle)
+  submitForm(form: NgForm): void {
+    this.newArticle.emit(this.createArticle);
+    form.reset();
   }
 }

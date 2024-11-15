@@ -58,7 +58,7 @@ export class AppComponent {
 
   handleCreateArticle(newArticle: CreateEditArticle ): void {
     console.log(newArticle);
-    
+    this.isVisibleMode.update( isVisibleMode => !isVisibleMode);
   }
 
   editArticle(): void {
