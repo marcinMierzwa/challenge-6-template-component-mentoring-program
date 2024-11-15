@@ -4,11 +4,14 @@ import {
   signal,
   Signal,
 } from '@angular/core';
-import { Article, ArticlesService } from './articles.service';
+import { ArticlesService } from './articles.service';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { FooterComponent } from './footer.component';
 import { CardComponent } from './card.component';
-import { CreateEditArticle, FormComponent } from './form.component';
+import { FormComponent } from './form.component';
+import { Article } from './models/article-model';
+import { ArticleCreate } from './models/articleCreate-model';
+import { ArticleEdit } from './models/articleEdit-model';
 
 
 export interface PreviewArticle {
@@ -31,14 +34,47 @@ export class AppComponent {
   articles: Signal<Article[]> = toSignal(this.articlesService.getAll(), {
     initialValue: [],
   });
-  previewArticle = signal<PreviewArticle>({
+  article = signal<Article>({
     title: '',
     imageUrl: '',
     content: '',
-    showImage: true
+    showImage: true,
+    id: 0
   });
   mode = signal<string>('');
   isVisibleMode = signal<boolean>(true);
+
+  create(): void {
+    this.article.set({
+      title: '',
+      imageUrl: '',
+      content: '',
+      showImage: true,
+      id: 0
+    })
+    this.mode.set('Create Mode');
+    this.isVisibleMode.update( isVisibleMode => !isVisibleMode);
+    this.toggleScrollVisibility(true);
+  }
+
+  edit(id: number) {
+    this.articles().find((article: Article) => {
+      if ( article.id === id ) {
+        this.article.set(article);
+      }
+    })
+    this.isVisibleMode.update( isVisibleMode => !isVisibleMode);
+    this.mode.set('Edit Mode');
+    this.toggleScrollVisibility(true);
+  }
+
+  handleArticle(article: Article): void {
+    this.article.set(article);
+  }
+
+
+
+
   showImage(id: number): void {
     this.articles().find((article: Article) => {
       if (article.id === id) {
@@ -51,36 +87,8 @@ export class AppComponent {
     return showImage ? 'Hide Image' : 'Show Image';
   }
 
-  createArticle(): void {
-    this.previewArticle.set({
-      title: '',
-      imageUrl: '',
-      content: '',
-      showImage: false
-    });
-    this.mode.set('Create Mode');
-    this.isVisibleMode.update( isVisibleMode => !isVisibleMode);
-    this.toggleScrollVisibility(true);
-  }
-
-  editArticle(index: number) {
-    this.isVisibleMode.update( isVisibleMode => !isVisibleMode);
-    this.mode.set('Edit Mode');
-
-    const article = this.articles()[index];
-    this.previewArticle.set({
-    title: article.title,
-    imageUrl: article.imageUrl,
-    content: article.content,
-    showImage: article.showImage,
-  });
-  this.toggleScrollVisibility(true);
-  }
 
 
-  handleArticle(article: CreateEditArticle): void {
-    this.previewArticle.set(article);
-  }
 
   closeActiveMode(): void {
     this.isVisibleMode.update( isVisibleMode => !isVisibleMode);

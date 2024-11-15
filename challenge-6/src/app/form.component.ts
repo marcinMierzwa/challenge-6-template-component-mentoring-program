@@ -1,13 +1,9 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormsModule, NgForm } from '@angular/forms';
+import { ArticleCreate } from './models/articleCreate-model';
+import { Article } from './models/article-model';
 
 // https://fakestoreapi.com/img/71-3HjGNDUL._AC_SY879._SX._UX._SY._UY_.jpg
-export interface CreateEditArticle {
-    title: string;
-    imageUrl: string;
-    content: string;
-    showImage: boolean;
-}
 
 @Component({
   selector: 'app-form',
@@ -19,7 +15,7 @@ export interface CreateEditArticle {
       #form="ngForm"
       (ngSubmit)="submitForm(form)"
     >
-      <h2 class="fs-4 fw-medium text-center p-2">{{ articleMode }}</h2>
+      <h2 class="fs-4 fw-medium text-center p-2">{{ mode }}</h2>
 
       <!-- image Url -->
       <div>
@@ -32,8 +28,8 @@ export interface CreateEditArticle {
           aria-describedby="imageUrlInput"
           placeholder="Your Image"
           spellcheck="false"
-          [(ngModel)]="imageUrl"
-          (ngModelChange)="previewUpdate()"
+          [(ngModel)]="articleData.imageUrl"
+          (ngModelChange)="emitArticle()"
           #imageUrlInput="ngModel"
           required
         />
@@ -57,8 +53,8 @@ export interface CreateEditArticle {
           aria-describedby="titleInput"
           placeholder="Your Title"
           spellcheck="false"
-          [(ngModel)]="title"
-          (ngModelChange)="previewUpdate()"
+          [(ngModel)]="articleData.title"
+          (ngModelChange)="emitArticle()"
           #titleInput="ngModel"
           required
         />
@@ -81,8 +77,8 @@ export interface CreateEditArticle {
           rows="10"
           placeholder="Your Content"
           spellcheck="false"
-          [(ngModel)]="content"
-          (ngModelChange)="previewUpdate()"
+          [(ngModel)]="articleData.content"
+          (ngModelChange)="emitArticle()"
           #contentInput="ngModel"
           required
         ></textarea>
@@ -121,26 +117,18 @@ export interface CreateEditArticle {
   ],
 })
 export class FormComponent {
-    @Input() articleMode = '';
-    @Input() imageUrl: string = '';
-    @Input() title: string = '';
-    @Input() content: string = '';
+    @Input() mode = '';
+    @Input() articleData!: Article;
   
-    @Output() newArticle = new EventEmitter();
+    @Output() formArticle = new EventEmitter();
   
     submitForm(form: NgForm): void {
       form.reset();
     }
   
-    previewUpdate(): void {
-      const article: CreateEditArticle = {
-        title: this.title,
-        imageUrl: this.imageUrl,
-        content: this.content,
-        showImage: true,
-      };
-      this.newArticle.emit(article);  // Emitowanie pełnego obiektu
-    }
+    emitArticle(): void {
+        this.formArticle.emit(this.articleData);
+      }
   }
 
 

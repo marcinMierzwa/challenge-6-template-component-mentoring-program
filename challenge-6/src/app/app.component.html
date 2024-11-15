@@ -4,7 +4,7 @@
   <header class="w-100 my-3">
     <div class="d-flex flex-column align-items-center gap-4">
       <h1 class="m-0">Template Component - Article List</h1>
-      <button class="btn btn-outline-dark" (click)="createArticle()">
+      <button class="btn btn-outline-dark" (click)="create()">
         Add New Article
       </button>
     </div>
@@ -36,7 +36,7 @@
               </button>
               <button 
               class="btn btn-outline-dark btn-sm"
-              (click)="editArticle(index)"
+              (click)="edit(article.id)"
               >Edit</button>
             </div>
           </app-card>
@@ -58,11 +58,9 @@
           <div class="d-flex flex-column bg-transparent w-50 rounded">
             
             <app-form
-             [articleMode]="this.mode()"
-             [imageUrl]="previewArticle().imageUrl"
-             [title]="previewArticle().title"
-             [content]="previewArticle().content"
-             (newArticle)="handleArticle($event)"
+             [mode]="this.mode()"
+             [articleData]="article()"
+             (formArticle)="handleArticle($event)"
                           >
               <button 
               type="button" 
@@ -78,10 +76,10 @@
             <!-- card preview -->
 
             <app-card 
-            [imageUrl]="previewArticle().imageUrl"
-            [title]="previewArticle().title"
-            [content]="previewArticle().content"
-            [showImage]="!previewArticle().showImage"
+            [imageUrl]="article().imageUrl"
+            [title]="article().title"
+            [content]="article().content"
+            [showImage]="true"
             >
               <div class="d-flex justify-content-center gap-3 my-3">
                 <button class="btn btn-outline-dark btn-sm" [disabled]="!isVisibleMode()">

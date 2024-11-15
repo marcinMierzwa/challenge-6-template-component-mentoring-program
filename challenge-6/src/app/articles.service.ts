@@ -1,32 +1,12 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
-import { map, Observable, tap } from 'rxjs';
+import { map, Observable,} from 'rxjs';
+import { Article } from './models/article-model';
+import { ArticleApi } from './models/articleApi-model';
 
-export interface ArticleApi {
-  createdAt: string;
-  title: string;
-  imageUrl: string;
-  content: string;
-  comments: [
-    {
-      text: string;
-      user: {
-        avatar: string;
-        name: string;
-      }
-    }
-  ]
-  id: number;
- showImage: boolean;
-}
 
-export interface Article {
-  title: string;
-  imageUrl: string;
-  content: string;
-  id: number;
-  showImage: boolean;
-}
+
+
 
 @Injectable({
   providedIn: 'root'
