@@ -31,15 +31,14 @@ export class AppComponent {
   articles: Signal<Article[]> = toSignal(this.articlesService.getAll(), {
     initialValue: [],
   });
-  previewArticle: PreviewArticle = {
+  previewArticle = signal<PreviewArticle>({
     title: '',
     imageUrl: '',
     content: '',
     showImage: true
-  }
-  titleMode = signal<string>('');
+  });
+  mode = signal<string>('');
   isVisibleMode = signal<boolean>(true);
-
   showImage(id: number): void {
     this.articles().find((article: Article) => {
       if (article.id === id) {
@@ -53,24 +52,34 @@ export class AppComponent {
   }
 
   createArticle(): void {
-    this.titleMode.set('Create Mode');
+    this.previewArticle.set({
+      title: '',
+      imageUrl: '',
+      content: '',
+      showImage: false
+    });
+    this.mode.set('Create Mode');
     this.isVisibleMode.update( isVisibleMode => !isVisibleMode);
     this.toggleScrollVisibility(true);
   }
 
-  editArticle(articleId: number) {
+  editArticle(index: number) {
     this.isVisibleMode.update( isVisibleMode => !isVisibleMode);
-    this.titleMode.set('Edit Mode');
+    this.mode.set('Edit Mode');
+
+    const article = this.articles()[index];
+    this.previewArticle.set({
+    title: article.title,
+    imageUrl: article.imageUrl,
+    content: article.content,
+    showImage: article.showImage,
+  });
+  this.toggleScrollVisibility(true);
   }
 
-  handleCreateArticle(article: CreateEditArticle): void {
-    console.log(article);
-    
-    this.previewArticle = { ...article, showImage: true };
-    // this.isVisibleMode.update( isVisibleMode => !isVisibleMode);
-  }
 
-  editArticleMode(): void {
+  handleArticle(article: CreateEditArticle): void {
+    this.previewArticle.set(article);
   }
 
   closeActiveMode(): void {
