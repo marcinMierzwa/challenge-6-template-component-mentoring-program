@@ -12,12 +12,13 @@
 
   <main class="w-75">
     @if(articles().length > 0) {
+
     <!-- section init state -->
     <section>
       <div
         class="d-flex flex-wrap justify-content-between align-items-stretch gap-3"
       >
-        @for (article of articles(); track article.id) {
+        @for (article of articles(); track article.id;) {
         <div style="flex-basis: 30%">
           <!-- app-card -->
           <app-card
@@ -33,13 +34,16 @@
               >
                 {{ toggleButtonLabel(article.showImage) }}
               </button>
-              <button class="btn btn-outline-dark btn-sm">Edit</button>
+              <button 
+              class="btn btn-outline-dark btn-sm"
+              (click)="editArticle(article.id)"
+              >Edit</button>
             </div>
           </app-card>
         </div>
         }
       </div>
-    </section>
+      </section>
 
     <!-- section create/edit state -->
     <section>
@@ -51,10 +55,15 @@
         <div class="w-75 mt-3 mx-auto d-flex justify-content-between gap-5 p-3">
           <!-- form -->
 
-          <div class="d-flex flex-column bg-success w-50 rounded">
+          <div class="d-flex flex-column bg-transparent w-50 rounded">
             <app-form
              [articleMode]="this.titleMode()"
+             [imageUrl]="articles()[0].imageUrl"
+             [title]="articles()[0].title"
+             [content]="articles()[0].content"
              (newArticle)="handleCreateArticle($event)"
+             
+
              >
               <button 
               type="button" 
@@ -64,30 +73,34 @@
             </app-form>
           </div>
 
-          <div class="d-flex flex-column text-center gap-3 w-50 rounded">
-            <h2 class="fs-4 fw-medium bg-body-tertiary p-3 rounded">Preview</h2>
+          <div class="d-flex flex-column gap-3 w-50 rounded bg-danger-subtle " >
+            <h2 class="fs-4 fw-medium bg-body-tertiary text-center p-3 rounded">Preview</h2>
 
             <!-- card preview -->
 
-            <app-card>
+            <app-card 
+            [imageUrl]="previewArticle.imageUrl"
+            [title]="previewArticle.title"
+            [content]="previewArticle.content"
+            [showImage]="previewArticle.showImage"
+            >
               <div class="d-flex justify-content-center gap-3 my-3">
-                <button class="btn btn-outline-dark btn-sm">
+                <button class="btn btn-outline-dark btn-sm" [disabled]="!isVisibleMode()">
                   Show Image
                 </button>
-                <button class="btn btn-outline-dark btn-sm">Edit</button>
+                <button class="btn btn-outline-dark btn-sm" [disabled]="!isVisibleMode()">Edit</button>
               </div>
             </app-card>
           </div>
         </div>
       </div>
     </section>
-
-    } @else {
+  } @else {
     <div class="w-100 text-center my-5">
       <div class="spinner-border" role="status"></div>
     </div>
     }
-  </main>
+</main>
 
   <footer class="w-100">
     <app-footer />

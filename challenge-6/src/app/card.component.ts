@@ -5,9 +5,9 @@ import { Component, EventEmitter, Input, Output } from "@angular/core";
   standalone: true,
   template: `
   
-  <div class="card p-0 overflow-y-auto bg-body-tertiary rounded">
+  <div class="card p-0 bg-body-tertiary rounded overflow-y-auto">
     
-    <div class="card-body d-flex flex-column align-items-center p-0 ">
+    <div class="card-body d-flex flex-column align-items-center p-0">
 
         <div style="height: 70px" class="d-flex align-items-center justify-content-center w-100 border-0 p-2">
         <h2 class="card-title fs-4 m-0 fw-normal text-center">{{ title }}</h2>
@@ -17,11 +17,13 @@ import { Component, EventEmitter, Input, Output } from "@angular/core";
         <img
         [src]="imageUrl" 
         [hidden]="!showImage"
-        class="w-50 img-fluid object-fit-cover py-3 " alt="article image"
+        class="w-50 img-fluid object-fit-cover py-3"
+        style="max-width: 200px;"
+        alt="article image"
         > 
         </div>
 
-        <div class="border-bottom bg-white">
+        <div class="w-100 border-bottom bg-white">
         <p class="card-text overflow-y-auto px-4 py-2 text-start" style="word-spacing: 0.5em; height: 300px">{{ content }}</p>
         </div>
 

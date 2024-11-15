@@ -8,13 +8,14 @@ import { Article, ArticlesService } from './articles.service';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { FooterComponent } from './footer.component';
 import { CardComponent } from './card.component';
-import { FormComponent } from './form.component';
+import { CreateEditArticle, FormComponent } from './form.component';
 
 
-export interface CreateEditArticle {
+export interface PreviewArticle {
   title: string;
   imageUrl: string;
-  content: string
+  content: string;
+  showImage: boolean;
 }
 
 @Component({
@@ -30,10 +31,11 @@ export class AppComponent {
   articles: Signal<Article[]> = toSignal(this.articlesService.getAll(), {
     initialValue: [],
   });
-  article: CreateEditArticle = {
+  previewArticle: PreviewArticle = {
     title: '',
     imageUrl: '',
-    content: ''
+    content: '',
+    showImage: true
   }
   titleMode = signal<string>('');
   isVisibleMode = signal<boolean>(true);
@@ -56,13 +58,19 @@ export class AppComponent {
     this.toggleScrollVisibility(true);
   }
 
-  handleCreateArticle(newArticle: CreateEditArticle ): void {
-    console.log(newArticle);
+  editArticle(articleId: number) {
     this.isVisibleMode.update( isVisibleMode => !isVisibleMode);
+    this.titleMode.set('Edit Mode');
   }
 
-  editArticle(): void {
-    this.titleMode.set('Edit Mode');
+  handleCreateArticle(article: CreateEditArticle): void {
+    console.log(article);
+    
+    this.previewArticle = { ...article, showImage: true };
+    // this.isVisibleMode.update( isVisibleMode => !isVisibleMode);
+  }
+
+  editArticleMode(): void {
   }
 
   closeActiveMode(): void {
