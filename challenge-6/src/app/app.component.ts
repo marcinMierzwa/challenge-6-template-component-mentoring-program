@@ -31,6 +31,7 @@ export class AppComponent {
     initialValue: [],
   });
   titleMode = signal<string>('');
+  isVisibleMode = signal<boolean>(true);
 
   showImage(id: number): void {
     this.articles().find((article: Article) => {
@@ -46,15 +47,22 @@ export class AppComponent {
 
   createArticle(): void {
     this.titleMode.set('Create Mode');
+    this.isVisibleMode.update( isVisibleMode => !isVisibleMode);
+    this.toggleScrollVisibility(true);
   }
 
   editArticle(): void {
     this.titleMode.set('Edit Mode');
   }
 
+  closeActiveMode(): void {
+    this.isVisibleMode.update( isVisibleMode => !isVisibleMode);
+    this.toggleScrollVisibility(false);
+  }
+
   
-  disableScroll(): void {
-    document.body.style.overflow = 'hidden';
+  toggleScrollVisibility(isScrollVisible: boolean): void {
+    document.body.style.overflow = isScrollVisible ? 'hidden' : 'visible';
   }
 
 

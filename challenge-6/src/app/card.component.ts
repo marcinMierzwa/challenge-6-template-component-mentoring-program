@@ -13,15 +13,15 @@ import { Component, EventEmitter, Input, Output } from "@angular/core";
         <h2 class="card-title fs-4 m-0 fw-normal text-center">{{ title }}</h2>
         </div>
 
-        <div class="w-100 d-flex justify-content-center bg-white">
+        <div class="w-100 d-flex justify-content-center bg-white border-top">
         <img
         [src]="imageUrl" 
         [hidden]="!showImage"
-        class="w-50 img-fluid object-fit-cover py-3" alt="article image"
+        class="w-50 img-fluid object-fit-cover py-3 " alt="article image"
         > 
         </div>
 
-        <div class="border bg-white">
+        <div class="border-bottom bg-white">
         <p class="card-text overflow-y-auto px-4 py-2 text-start" style="word-spacing: 0.5em; height: 300px">{{ content }}</p>
         </div>
 

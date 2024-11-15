@@ -4,10 +4,7 @@
   <header class="w-100 my-3">
     <div class="d-flex flex-column align-items-center gap-4">
       <h1 class="m-0">Template Component - Article List</h1>
-      <button
-        class="btn btn-outline-dark"
-        (click)="createArticle()"
-      >
+      <button class="btn btn-outline-dark" (click)="createArticle()">
         Add New Article
       </button>
     </div>
@@ -36,10 +33,7 @@
               >
                 {{ toggleButtonLabel(article.showImage) }}
               </button>
-              <button 
-              class="btn btn-outline-dark btn-sm"
-              
-              >Edit</button>
+              <button class="btn btn-outline-dark btn-sm">Edit</button>
             </div>
           </app-card>
         </div>
@@ -49,32 +43,21 @@
 
     <!-- section create/edit state -->
     <section>
-
-      <div style="background: rgba(0, 0, 0, 0.5); backdrop-filter: blur(5px); "
-      class="position-fixed top-0 start-0 vw-100 vh-100">
-      
-        <div
-          class="w-75 mt-3 mx-auto d-flex justify-content-between gap-5 p-3"
-        >
+      <div
+        style="background: rgba(0, 0, 0, 0.5); backdrop-filter: blur(5px)"
+        class="position-fixed top-0 start-0 vw-100 vh-100"
+        [hidden]="isVisibleMode()"
+      >
+        <div class="w-75 mt-3 mx-auto d-flex justify-content-between gap-5 p-3">
           <!-- form -->
 
           <div class="d-flex flex-column bg-success w-50 rounded">
             <app-form [articleMode]="this.titleMode()">
-
-              <div class="d-flex justify-content-center gap-5 ">
-                <button 
-              type="submit"
-              class="btn btn-outline-dark"
-                >Create</button>
-                <button type="button" data-bs-toggle="modal"
-                data-bs-target="#exampleModal"
-        class="btn btn-danger">Cancel</button>
-
-
-       
-                </div>
-      
-
+              <button 
+              type="button" 
+              class="btn btn-danger"
+              (click)="closeActiveMode()"
+              >Cancel</button>
             </app-form>
           </div>
 
@@ -83,20 +66,17 @@
 
             <!-- card -->
 
-            <app-card
-            >
-            <div class="d-flex justify-content-center gap-3 my-3">
-              <button [disabled] class="btn btn-outline-dark btn-sm">Show Image</button>
-              <button 
-              class="btn btn-outline-dark btn-sm"
-              
-              >Edit</button>
-            </div>
-
-          </app-card>
+            <app-card>
+              <div class="d-flex justify-content-center gap-3 my-3">
+                <button class="btn btn-outline-dark btn-sm">
+                  Show Image
+                </button>
+                <button class="btn btn-outline-dark btn-sm">Edit</button>
+              </div>
+            </app-card>
           </div>
         </div>
-        </div>
+      </div>
     </section>
 
     } @else {
@@ -110,17 +90,3 @@
     <app-footer />
   </footer>
 </div>
-
-
-<!-- data-bs-toggle="modal"
-data-bs-target="#exampleModal"
-<div
-class="modal"
-id="exampleModal"
-tabindex="-1"
-aria-labelledby="exampleModalLabel"
-aria-hidden="true"
-style="backdrop-filter: blur(2px)"
->  
-    </div>
- -->
