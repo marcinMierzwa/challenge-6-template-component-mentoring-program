@@ -1,6 +1,5 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormsModule, NgForm } from '@angular/forms';
-import { ArticleCreate } from './models/articleCreate-model';
 import { Article } from './models/article-model';
 
 // https://fakestoreapi.com/img/71-3HjGNDUL._AC_SY879._SX._UX._SY._UY_.jpg
@@ -13,7 +12,7 @@ import { Article } from './models/article-model';
     <form
       class="bg-body-tertiary p-3 rounded"
       #form="ngForm"
-      (ngSubmit)="submitForm(form)"
+      (ngSubmit)="submitForm()"
     >
       <h2 class="fs-4 fw-medium text-center p-2">{{ mode }}</h2>
 
@@ -120,14 +119,15 @@ export class FormComponent {
     @Input() mode = '';
     @Input() articleData!: Article;
   
-    @Output() formArticle = new EventEmitter();
+    @Output() sendArticlePreview = new EventEmitter();
+    @Output() submitArticle = new EventEmitter();
   
-    submitForm(form: NgForm): void {
-      form.reset();
+    submitForm(): void {
+        this.submitArticle.emit({...this.articleData, mode: this.mode});
     }
   
     emitArticle(): void {
-        this.formArticle.emit(this.articleData);
+        this.sendArticlePreview.emit(this.articleData);
       }
   }
 

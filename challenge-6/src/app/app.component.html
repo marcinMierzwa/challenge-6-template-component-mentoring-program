@@ -10,6 +10,8 @@
     </div>
   </header>
 
+  <button (click)="this.articlesService.delete().subscribe()">delete</button>
+
   <main class="w-75">
     @if(articles().length > 0) {
 
@@ -60,8 +62,9 @@
             <app-form
              [mode]="this.mode()"
              [articleData]="article()"
-             (formArticle)="handleArticle($event)"
-                          >
+             (sendArticlePreview)="handlePreviewArticle($event)"
+             (submitArticle)="handleSubmitForm($event)" 
+             >
               <button 
               type="button" 
               class="btn btn-danger"

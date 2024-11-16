@@ -3,7 +3,8 @@ import { inject, Injectable } from '@angular/core';
 import { map, Observable,} from 'rxjs';
 import { Article } from './models/article-model';
 import { ArticleApi } from './models/articleApi-model';
-
+import { ArticleCreate } from './models/articleCreate-model';
+import { ArticleEdit } from './models/articleEdit-model';
 
 
 
@@ -28,5 +29,18 @@ export class ArticlesService {
           }))
         ),
       );
+  }
+
+  create(article: ArticleCreate): Observable<ArticleApi> {
+    return this.httpClient.post<ArticleApi>("https://636ce2d8ab4814f2b2712854.mockapi.io/articles-with-comments", article)
+  }
+
+  update(article: ArticleEdit): Observable<ArticleApi> {
+    return this.httpClient.put<ArticleApi>(`https://636ce2d8ab4814f2b2712854.mockapi.io/articles-with-comments/${article.id}`, article)
+
+  }
+
+  delete() {
+    return this.httpClient.delete<any>(`https://636ce2d8ab4814f2b2712854.mockapi.io/articles-with-comments/183`)
   }
 }

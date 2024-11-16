@@ -10,8 +10,8 @@ import { FooterComponent } from './footer.component';
 import { CardComponent } from './card.component';
 import { FormComponent } from './form.component';
 import { Article } from './models/article-model';
-import { ArticleCreate } from './models/articleCreate-model';
-import { ArticleEdit } from './models/articleEdit-model';
+import { ArticleDataForm } from './models/articleFormData-models';
+import { ArticleApi } from './models/articleApi-model';
 
 
 export interface PreviewArticle {
@@ -58,6 +58,8 @@ export class AppComponent {
   }
 
   edit(id: number) {
+    console.log(id);
+    
     this.articles().find((article: Article) => {
       if ( article.id === id ) {
         this.article.set(article);
@@ -68,9 +70,38 @@ export class AppComponent {
     this.toggleScrollVisibility(true);
   }
 
-  handleArticle(article: Article): void {
+  handlePreviewArticle(article: Article) {
     this.article.set(article);
   }
+
+  handleSubmitForm(article: ArticleDataForm): void {
+    const {imageUrl, title, content, showImage, id, mode } = article;
+    if (mode === 'Create Mode') {
+      this.articlesService.create({ imageUrl, title, content, showImage: !showImage }).subscribe({
+        next: (response: ArticleApi) => {
+          alert(`Article "${response.title}" created successfully!`);
+          window.location.reload();
+        },
+        error: (err) => {
+          alert(`Error creating article:, ${err.message}`);
+        }
+      });
+    } 
+    if (mode === 'Edit Mode') {
+      this.articlesService.update(article).subscribe({
+        next: (response: ArticleApi) => {
+          alert(`Article "${response.title}" updated successfully!`);
+          window.location.reload();
+        },
+        error: (err) => {
+          alert(`Error updateing article:, ${err.message}`);
+        }
+      });
+    }      
+     
+    
+  }
+
 
 
 
