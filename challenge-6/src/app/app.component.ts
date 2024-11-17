@@ -80,7 +80,7 @@ export class AppComponent {
       this.articlesService.create({ imageUrl, title, content, showImage: !showImage }).subscribe({
         next: (response: ArticleApi) => {
           alert(`Article "${response.title}" created successfully!`);
-          window.location.reload();
+          this.articlesService.getAll();
         },
         error: (err) => {
           alert(`Error creating article:, ${err.message}`);
@@ -91,8 +91,9 @@ export class AppComponent {
       this.articlesService.update(article).subscribe({
         next: (response: ArticleApi) => {
           alert(`Article "${response.title}" updated successfully!`);
-          window.location.reload();
-        },
+          this.articlesService.getAll();
+          this.isVisibleMode.update( isVisibleMode => !isVisibleMode);
+      },
         error: (err) => {
           alert(`Error updateing article:, ${err.message}`);
         }
