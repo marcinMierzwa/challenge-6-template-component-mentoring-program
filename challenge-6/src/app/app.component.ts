@@ -92,7 +92,6 @@ export class AppComponent {
         next: (response: ArticleApi) => {
           alert(`Article "${response.title}" updated successfully!`);
           this.articlesService.getAll();
-          this.isVisibleMode.update( isVisibleMode => !isVisibleMode);
       },
         error: (err) => {
           alert(`Error updateing article:, ${err.message}`);
