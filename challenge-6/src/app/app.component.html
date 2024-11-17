@@ -4,18 +4,22 @@
   <header class="w-100 my-3">
     <div class="d-flex flex-column align-items-center gap-4">
       <h1 class="m-0">Template Component - Article List</h1>
-      <button class="btn btn-outline-dark" (click)="create()">
+      <button class="btn btn-outline-dark" (click)="create()" [disabled]="this.articleMode() !== 'Initial Mode'">
         Add New Article
       </button>
     </div>
   </header>
 
-  <button (click)="this.articlesService.delete().subscribe()">delete</button>
+  <!-- delete this!!!!!!!!!!!!! -->
+  <!-- <button (click)="this.articlesService.delete().subscribe()">delete</button> -->
+  <!-- <button (click)="this.articlesService.getAll().subscribe();">get</button> -->
+  
+
 
   <main class="w-75">
     @if(articles().length > 0) {
 
-    <!-- section init state -->
+    <!-- initial mode -->
     <section>
       <div
         class="d-flex flex-wrap justify-content-between align-items-stretch gap-3"
@@ -33,7 +37,7 @@
               <button
                 class="btn btn-outline-dark btn-sm"
                 (click)="showImage(article.id)"
-              >
+                >
                 {{ toggleButtonLabel(article.showImage) }}
               </button>
               <button 
@@ -47,48 +51,52 @@
       </div>
       </section>
 
-    <!-- section create/edit state -->
+    <!-- create/edit mode -->
     <section>
       <div
         style="background: rgba(0, 0, 0, 0.5); backdrop-filter: blur(5px)"
         class="position-fixed top-0 start-0 vw-100 vh-100"
-        [hidden]="isVisibleMode()"
+        [hidden]="this.articleMode() === 'Initial Mode'"
       >
-        <div class="w-75 mt-3 mx-auto d-flex justify-content-between gap-5 p-3">
+
+
+        <div style="transform: translate(-50%, -50%);" class="w-75 mx-auto d-flex  gap-4 position-absolute top-50 start-50">
           <!-- form -->
 
-          <div class="d-flex flex-column bg-transparent w-50 rounded">
+          <div class="bg-transparent w-50 rounded">
             
             <app-form
-             [mode]="this.mode()"
-             [articleData]="article()"
+             [mode]="setModeHeader()"
+             [articleData]="articlePreview()"
              (sendArticlePreview)="handlePreviewArticle($event)"
              (submitArticle)="handleSubmitForm($event)" 
              >
               <button 
               type="button" 
               class="btn btn-danger"
-              (click)="closeActiveMode()"
+              (click)="closeCreateEditMode()"
               >Cancel</button>
             </app-form>
           </div>
 
-          <div class="d-flex flex-column gap-3 w-50 rounded bg-danger-subtle " >
+          <div class="w-50 rounded d-flex flex-column " >
             <h2 class="fs-4 fw-medium bg-body-tertiary text-center p-3 rounded">Preview</h2>
 
             <!-- card preview -->
-
             <app-card 
-            [imageUrl]="article().imageUrl"
-            [title]="article().title"
-            [content]="article().content"
+            [imageUrl]="articlePreview().imageUrl"
+            [title]="articlePreview().title"
+            [content]="articlePreview().content"
             [showImage]="true"
             >
               <div class="d-flex justify-content-center gap-3 my-3">
-                <button class="btn btn-outline-dark btn-sm" [disabled]="!isVisibleMode()">
-                  Show Image
+                <button class="btn btn-outline-dark btn-sm"
+                [disabled]="this.articleMode() !== 'Initial Mode'"
+                >Show Image
                 </button>
-                <button class="btn btn-outline-dark btn-sm" [disabled]="!isVisibleMode()">Edit</button>
+                <button class="btn btn-outline-dark btn-sm" 
+                [disabled]="this.articleMode() !== 'Initial Mode'"
+                >Edit</button>
               </div>
             </app-card>
           </div>

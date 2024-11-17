@@ -9,8 +9,10 @@ import { Article } from './models/article-model';
   standalone: true,
   imports: [FormsModule],
   template: `
+
+
     <form
-      class="bg-body-tertiary p-3 rounded"
+      class="bg-body-tertiary p-3 rounded d-flex flex-column justify-content-between h-100"
       #form="ngForm"
       (ngSubmit)="submitForm()"
     >
@@ -67,10 +69,10 @@ import { Article } from './models/article-model';
       </div>
 
       <!-- content -->
-      <div class="mb-2">
+      <div>
         <label for="contentInput" class="form-label p-1">Article Content</label>
         <textarea
-          class="form-control"
+          class="form-control h-75"
           id="contentInput"
           name="contentInput"
           rows="10"

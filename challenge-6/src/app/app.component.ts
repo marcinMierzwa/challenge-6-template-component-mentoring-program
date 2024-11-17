@@ -1,19 +1,20 @@
-import { Component, inject, signal, Signal } from '@angular/core';
+import {
+  Component,
+  computed,
+  effect,
+  inject,
+  signal,
+  Signal,
+} from '@angular/core';
 import { ArticlesService } from './articles.service';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { FooterComponent } from './footer.component';
 import { CardComponent } from './card.component';
 import { FormComponent } from './form.component';
 import { Article } from './models/article-model';
-import { ArticleDataForm } from './models/articleFormData-models';
+import { ArticleDataForm } from './models/articleDataForm-models';
 import { ArticleApi } from './models/articleApi-model';
-
-export interface PreviewArticle {
-  title: string;
-  imageUrl: string;
-  content: string;
-  showImage: boolean;
-}
+import { ArticleMode } from './models/articleMode-model';
 
 @Component({
   selector: 'app-root',
@@ -23,77 +24,69 @@ export interface PreviewArticle {
   imports: [FooterComponent, CardComponent, FormComponent],
 })
 export class AppComponent {
+
+ //delete this!!!!!!!!!!!!! -->
+  constructor() {
+    effect(() => {
+      console.log(this.articleMode());
+      console.log(this.articlePreview());
+    });
+  }
   title = 'mentoring-program-starter-kit';
   articlesService: ArticlesService = inject(ArticlesService);
   articles: Signal<Article[]> = toSignal(this.articlesService.getAll(), {
     initialValue: [],
   });
-  article = signal<Article>({
+  articlePreview = signal<Article>({
     title: '',
     imageUrl: '',
     content: '',
     showImage: true,
     id: 0,
   });
-  mode = signal<string>('');
-  isVisibleMode = signal<boolean>(true);
+  articleMode = signal<ArticleMode>(ArticleMode.INIT);
+
+  isOpenCreateEditMode: Signal<boolean> = computed(() => {
+    return this.articleMode() !== ArticleMode.INIT;
+  });
+  isScrollVisible: Signal<boolean> = computed(() => {
+    return this.isOpenCreateEditMode();
+  });
+
+  private scrollVisibilityEffect = effect(() => {
+    document.body.style.overflow = this.isOpenCreateEditMode()
+      ? 'hidden'
+      : 'visible';
+  });
+
+  setModeHeader: Signal<string> = computed(() => {
+    return this.articleMode() === ArticleMode.CREATE
+      ? ArticleMode.CREATE
+      : ArticleMode.EDIT;
+  });
 
   create(): void {
-    this.article.set({
+    this.articlePreview.set({
       title: '',
       imageUrl: '',
       content: '',
       showImage: true,
       id: 0,
     });
-    this.mode.set('Create Mode');
-    this.isVisibleMode.update((isVisibleMode) => !isVisibleMode);
-    this.toggleScrollVisibility(true);
+    this.articleMode.set(ArticleMode.CREATE);
   }
 
   edit(id: number) {
-    console.log(id);
-
     this.articles().find((article: Article) => {
       if (article.id === id) {
-        this.article.set(article);
+        this.articlePreview.set({ ...article });
       }
     });
-    this.isVisibleMode.update((isVisibleMode) => !isVisibleMode);
-    this.mode.set('Edit Mode');
-    this.toggleScrollVisibility(true);
+    this.articleMode.set(ArticleMode.EDIT);
   }
 
   handlePreviewArticle(article: Article) {
-    this.article.set(article);
-  }
-
-  handleSubmitForm(article: ArticleDataForm): void {
-    const { imageUrl, title, content, showImage, id, mode } = article;
-    if (mode === 'Create Mode') {
-      this.articlesService
-        .create({ imageUrl, title, content, showImage: !showImage })
-        .subscribe({
-          next: (response: ArticleApi) => {
-            alert(`Article "${response.title}" created successfully!`);
-            this.articlesService.getAll();
-          },
-          error: (err) => {
-            alert(`Error creating article:, ${err.message}`);
-          },
-        });
-    }
-    if (mode === 'Edit Mode') {
-      this.articlesService.update(article).subscribe({
-        next: (response: ArticleApi) => {
-          alert(`Article "${response.title}" updated successfully!`);
-          this.articlesService.getAll();
-        },
-        error: (err) => {
-          alert(`Error updateing article:, ${err.message}`);
-        },
-      });
-    }
+    this.articlePreview.set(article);
   }
 
   showImage(id: number): void {
@@ -108,12 +101,39 @@ export class AppComponent {
     return showImage ? 'Hide Image' : 'Show Image';
   }
 
-  closeActiveMode(): void {
-    this.isVisibleMode.update((isVisibleMode) => !isVisibleMode);
-    this.toggleScrollVisibility(false);
+  closeCreateEditMode() {
+    this.articleMode.set(ArticleMode.INIT);
   }
 
-  toggleScrollVisibility(isScrollVisible: boolean): void {
-    document.body.style.overflow = isScrollVisible ? 'hidden' : 'visible';
+  // to backend
+  handleSubmitForm(article: ArticleDataForm): void {
+    const { imageUrl, title, content, showImage, id, mode } = article;
+    if (mode === 'Create Mode') {
+      this.articlesService
+        .create({ imageUrl, title, content, showImage: !showImage })
+        .subscribe({
+          next: (response: ArticleApi) => {
+            alert(`Article "${response.title}" created successfully!`);
+            this.articlesService.getAll().subscribe();
+            this.articleMode.set(ArticleMode.INIT);
+          },
+          error: (err) => {
+            alert(`Error creating article:, ${err.message}`);
+          },
+        });
+    }
+    if (mode === 'Edit Mode') {
+      this.articlesService.update(article).subscribe({
+        next: (response: ArticleApi) => {
+          alert(`Article "${response.title}" updated successfully!`);
+          this.articlesService.getAll().subscribe();
+          this.articleMode.set(ArticleMode.INIT);
+
+        },
+        error: (err) => {
+          alert(`Error updateing article:, ${err.message}`);
+        },
+      });
+    }
   }
 }

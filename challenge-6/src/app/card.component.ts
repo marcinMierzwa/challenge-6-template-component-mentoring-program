@@ -5,20 +5,20 @@ import { Component, EventEmitter, Input, Output } from "@angular/core";
   standalone: true,
   template: `
   
-  <div class="card p-0 bg-body-tertiary rounded overflow-y-auto">
+  <div class="card p-0 bg-body-tertiary rounded">
     
-    <div class="card-body d-flex flex-column align-items-center p-0">
+    <div class=" card-body d-flex flex-column align-items-center p-0">
 
-        <div style="height: 70px" class="d-flex align-items-center justify-content-center w-100 border-0 p-2">
-        <h2 class="card-title fs-4 m-0 fw-normal text-center">{{ title }}</h2>
+        <div class="d-flex align-items-center justify-content-center w-100 border-0 p-3">
+        <h2 class="card-title fs-5 m-0 fw-normal text-center">{{ title }}</h2>
         </div>
 
         <div class="w-100 d-flex justify-content-center bg-white border-top">
         <img
         [src]="imageUrl" 
         [hidden]="!showImage"
-        class="w-50 img-fluid object-fit-cover py-3"
-        style="max-width: 200px;"
+        class="img-fluid object-fit-cover py-3"
+        style="max-height: 250px;"
         alt="article image"
         > 
         </div>
