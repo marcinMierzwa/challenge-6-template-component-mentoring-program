@@ -1,5 +1,5 @@
 export enum ArticleMode {
-    INIT = 'initial-mode',
-    CREATE = 'create-mode',
-    EDIT = 'edit-mode'
+    INIT = 'Initial Mode',
+    CREATE = 'Create Mode',
+    EDIT = 'Edit Mode'
 }
