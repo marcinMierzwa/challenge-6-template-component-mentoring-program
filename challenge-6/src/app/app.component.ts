@@ -3,8 +3,10 @@ import {
   computed,
   effect,
   inject,
+  OnInit,
   signal,
   Signal,
+  WritableSignal,
 } from '@angular/core';
 import { ArticlesService } from './articles.service';
 import { toSignal } from '@angular/core/rxjs-interop';
@@ -23,20 +25,22 @@ import { ArticleMode } from './models/articleMode-model';
   styleUrl: './app.component.scss',
   imports: [FooterComponent, CardComponent, FormComponent],
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
 
  //delete this!!!!!!!!!!!!! -->
   constructor() {
     effect(() => {
+      console.log(this.articles());
       console.log(this.articleMode());
       console.log(this.articlePreview());
     });
   }
+  ngOnInit(): void {
+    this.articlesService.getAll();
+  }
   title = 'mentoring-program-starter-kit';
   articlesService: ArticlesService = inject(ArticlesService);
-  articles: Signal<Article[]> = toSignal(this.articlesService.getAll(), {
-    initialValue: [],
-  });
+  articles: Signal<Article[]> = toSignal(this.articlesService.articles$, { initialValue: [] });
   articlePreview = signal<Article>({
     title: '',
     imageUrl: '',
@@ -64,6 +68,8 @@ export class AppComponent {
       ? ArticleMode.CREATE
       : ArticleMode.EDIT;
   });
+
+  
 
   create(): void {
     this.articlePreview.set({
@@ -114,7 +120,7 @@ export class AppComponent {
         .subscribe({
           next: (response: ArticleApi) => {
             alert(`Article "${response.title}" created successfully!`);
-            this.articlesService.getAll().subscribe();
+            this.articlesService.getAll();
             this.articleMode.set(ArticleMode.INIT);
           },
           error: (err) => {
@@ -126,7 +132,7 @@ export class AppComponent {
       this.articlesService.update(article).subscribe({
         next: (response: ArticleApi) => {
           alert(`Article "${response.title}" updated successfully!`);
-          this.articlesService.getAll().subscribe();
+          this.articlesService.getAll();
           this.articleMode.set(ArticleMode.INIT);
 
         },
@@ -137,3 +143,4 @@ export class AppComponent {
     }
   }
 }
+

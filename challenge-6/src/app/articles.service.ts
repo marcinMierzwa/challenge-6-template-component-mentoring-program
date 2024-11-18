@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
-import { map, Observable,} from 'rxjs';
+import { BehaviorSubject, map, Observable,} from 'rxjs';
 import { Article } from './models/article-model';
 import { ArticleApi } from './models/articleApi-model';
 import { ArticleCreate } from './models/articleCreate-model';
@@ -15,8 +15,11 @@ import { ArticleEdit } from './models/articleEdit-model';
 export class ArticlesService {
   httpClient: HttpClient = inject(HttpClient);
 
-  getAll(): Observable<Article[]> {
-    return this.httpClient
+  private articlesSubject = new BehaviorSubject<Article[]>([]); 
+  articles$: Observable<Article[]> = this.articlesSubject.asObservable();
+
+  getAll() {
+    this.httpClient
       .get<ArticleApi[]>('https://636ce2d8ab4814f2b2712854.mockapi.io/articles-with-comments')
       .pipe(
         map((articles: ArticleApi[]) =>
@@ -28,7 +31,14 @@ export class ArticlesService {
             showImage: article.showImage
           }))
         ),
-      );
+      ).subscribe({
+        next: (articles: Article[]) => {
+          this.articlesSubject.next(articles); 
+        },
+        error: (err) => {
+          console.error('Fetch data error:', err);
+        },
+      });
   }
 
   create(article: ArticleCreate): Observable<ArticleApi> {
