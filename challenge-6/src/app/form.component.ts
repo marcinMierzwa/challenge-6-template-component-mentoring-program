@@ -1,23 +1,20 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { FormsModule, NgForm } from '@angular/forms';
+import { FormsModule } from '@angular/forms';
 import { Article } from './models/article-model';
 
-// https://fakestoreapi.com/img/71-3HjGNDUL._AC_SY879._SX._UX._SY._UY_.jpg
 
 @Component({
   selector: 'app-form',
   standalone: true,
   imports: [FormsModule],
   template: `
-
+    <ng-content></ng-content>
 
     <form
-      class="bg-body-tertiary p-3 rounded d-flex flex-column justify-content-between h-100"
+      class="bg-body-tertiary px-3 rounded rounded-top-0 border border-top-0 d-flex flex-column justify-content-between"
       #form="ngForm"
       (ngSubmit)="submitForm()"
     >
-      <h2 class="fs-4 fw-medium text-center p-2">{{ mode }}</h2>
-
       <!-- image Url -->
       <div>
         <label for="imageUrlInput" class="form-label p-1">Image Url</label>
@@ -93,7 +90,7 @@ import { Article } from './models/article-model';
       </div>
 
       <!-- submit -->
-      <div class="d-flex justify-content-center gap-5 ">
+      <div class="d-flex justify-content-center gap-5 mb-3">
         <button
           type="submit"
           class="btn btn-outline-dark"
@@ -118,19 +115,15 @@ import { Article } from './models/article-model';
   ],
 })
 export class FormComponent {
-    @Input() mode = '';
-    @Input() articleData!: Article;
-  
-    @Output() sendArticlePreview = new EventEmitter();
-    @Output() submitArticle = new EventEmitter();
-  
-    submitForm(): void {
-        this.submitArticle.emit({...this.articleData, mode: this.mode});
-    }
-  
-    emitArticle(): void {
-        this.sendArticlePreview.emit(this.articleData);
-      }
+  @Input() articleData!: Article;
+  @Output() sendArticlePreview = new EventEmitter();
+  @Output() submitArticle = new EventEmitter();
+
+  submitForm(): void {
+    this.submitArticle.emit(this.articleData);
   }
 
-
+  emitArticle(): void {
+    this.sendArticlePreview.emit(this.articleData);
+  }
+}

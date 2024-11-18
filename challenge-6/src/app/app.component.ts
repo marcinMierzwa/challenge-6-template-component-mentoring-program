@@ -6,7 +6,6 @@ import {
   OnInit,
   signal,
   Signal,
-  WritableSignal,
 } from '@angular/core';
 import { ArticlesService } from './articles.service';
 import { toSignal } from '@angular/core/rxjs-interop';
@@ -14,7 +13,6 @@ import { FooterComponent } from './footer.component';
 import { CardComponent } from './card.component';
 import { FormComponent } from './form.component';
 import { Article } from './models/article-model';
-import { ArticleDataForm } from './models/articleDataForm-models';
 import { ArticleApi } from './models/articleApi-model';
 import { ArticleMode } from './models/articleMode-model';
 
@@ -26,21 +24,14 @@ import { ArticleMode } from './models/articleMode-model';
   imports: [FooterComponent, CardComponent, FormComponent],
 })
 export class AppComponent implements OnInit {
-
- //delete this!!!!!!!!!!!!! -->
-  constructor() {
-    effect(() => {
-      console.log(this.articles());
-      console.log(this.articleMode());
-      console.log(this.articlePreview());
-    });
-  }
   ngOnInit(): void {
     this.articlesService.getAll();
   }
   title = 'mentoring-program-starter-kit';
   articlesService: ArticlesService = inject(ArticlesService);
-  articles: Signal<Article[]> = toSignal(this.articlesService.articles$, { initialValue: [] });
+  articles: Signal<Article[]> = toSignal(this.articlesService.articles$, {
+    initialValue: [],
+  });
   articlePreview = signal<Article>({
     title: '',
     imageUrl: '',
@@ -68,8 +59,6 @@ export class AppComponent implements OnInit {
       ? ArticleMode.CREATE
       : ArticleMode.EDIT;
   });
-
-  
 
   create(): void {
     this.articlePreview.set({
@@ -112,9 +101,9 @@ export class AppComponent implements OnInit {
   }
 
   // to backend
-  handleSubmitForm(article: ArticleDataForm): void {
-    const { imageUrl, title, content, showImage, id, mode } = article;
-    if (mode === 'Create Mode') {
+  handleSubmitForm(article: Article): void {
+    const { imageUrl, title, content, showImage, id } = article;
+    if (this.articleMode() === 'Create Mode') {
       this.articlesService
         .create({ imageUrl, title, content, showImage: !showImage })
         .subscribe({
@@ -128,13 +117,12 @@ export class AppComponent implements OnInit {
           },
         });
     }
-    if (mode === 'Edit Mode') {
+    if (this.articleMode() === 'Edit Mode') {
       this.articlesService.update(article).subscribe({
         next: (response: ArticleApi) => {
           alert(`Article "${response.title}" updated successfully!`);
           this.articlesService.getAll();
           this.articleMode.set(ArticleMode.INIT);
-
         },
         error: (err) => {
           alert(`Error updateing article:, ${err.message}`);
@@ -143,4 +131,3 @@ export class AppComponent implements OnInit {
     }
   }
 }
-
